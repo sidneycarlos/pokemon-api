@@ -13,30 +13,29 @@ export default (app) => {
                     })
                         .then(user => {
                             const message = `L'utilisateur ${user.username} a bien été créé.`
-                            res.json({ message, data: user })
+                            return res.json({ message, data: user })
                         })
                         .catch(error => {
                             if (error instanceof UniqueConstraintError) {
                                 const [constraintError] = error.errors
-                                res.status(400).json({message: constraintError.message, data: error})
-                            } else if (error instanceof ValidationError) {
-                                res.status(400).json({message: error.message, data: error})
-                            } else {
-                                const message = `L'utilisateur n'a pas pu être ajouté. Réessayez dans quelques instants.`
-                                res.status(500).json({message, data: error})
+                                return res.status(400).json({message: constraintError.message, data: error})
                             }
+                            if (error instanceof ValidationError) {
+                                return res.status(400).json({message: error.message, data: error})
+                            }
+
+                            const message = `L'utilisateur n'a pas pu être ajouté. Réessayez dans quelques instants.`
+                            return res.status(500).json({message, data: error})
                         })
                 })
-        } else {
-            const message= 'Mot de passe manquant.'
-            res.status(400).json({message: message})
-
         }
-            
+
+        const message= 'Mot de passe manquant.'
+        return res.status(400).json({message: message})            
     })
         
     app.post('/api/users', (req, res) => {
         const message = 'Vous ne pouvez pas ajouter plusieurs utilisateurs.'
-        res.status(404).json(message)
+        return res.status(404).json(message)
     })
 }
