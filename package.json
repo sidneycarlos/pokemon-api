@@ -1,0 +1,30 @@
+{
+  "name": "tuto",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "migrate": "sequelize-cli db:migrate"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mariadb": "^3.4.5",
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.10",
+    "sequelize": "^6.37.7",
+    "serve-favicon": "^2.5.1"
+  },
+  "devDependencies": {
+    "@sequelize/cli": "^7.0.0-alpha.46",
+    "sequelize-cli": "^6.6.3"
+  }
+}
