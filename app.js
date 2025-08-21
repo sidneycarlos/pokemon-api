@@ -28,13 +28,13 @@ app
 .use(bodyParser.urlencoded({ extended: false }))
 
 initDb()
+createUser(app)
+login(app)
 findAllPokemons(app)
 findPokemonByPk(app)
 createPokemon(app)
 updatePokemon(app)
 deletePokemon(app)
-login(app)
-createUser(app)
 
 app.use(({res}) => {
     const message = 'Impossible de trouver la ressources demandée! Vous pouvez essayer une autre URL'
