@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes } from 'sequelize'
 import PokemonModel from '../models/pokemon.js'
 import UserModel from '../models/user.js'
+import RevokedTokenModel from '../models/revokedToken.js'
 // import pokemons from './mock-pokemons.js'
 import mariadb from 'mariadb';
 import 'dotenv/config'
@@ -25,6 +26,7 @@ const sequelize = new Sequelize(
 
 export const Pokemon = PokemonModel(sequelize, DataTypes)
 export const User = UserModel(sequelize, DataTypes)
+export const RevokedToken = RevokedTokenModel(sequelize, DataTypes)
 
 export const initDb = () => {
     // return sequelize.sync({ force:true }) deactivate to avoid db deletion

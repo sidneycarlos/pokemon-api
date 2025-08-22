@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import { isTokenBlacklisted } from '@/auth/tokenBlacklist.js'
 
-export default (req, res, next) => {
+export default async (req, res, next) => {
     const authorizationHeader = req.headers.authorization;
 
     if (!authorizationHeader) {
@@ -16,14 +17,15 @@ export default (req, res, next) => {
 
     const token = tokenContents[1];
 
-    jwt.verify(token, process.env.JWT_PRIVATE_KEY, (error, decodedToken) => {
-        if (error) {
-            const message = `L'utilisateur n'est pas autorisé à accéder à cette ressource.`;
-            return res.status(401).json({ message, data: error.message });
-        }
-
+    try {
+        const decodedToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY)
         if (!decodedToken || !decodedToken.userId) {
             const message = `Le jeton ne contient pas d'identifiant utilisateur valide.`;
+            return res.status(401).json({ message });
+        }
+
+        if (decodedToken.jti && await isTokenBlacklisted(decodedToken.jti)) {
+            const message = `Le jeton a été révoqué.`;
             return res.status(401).json({ message });
         }
 
@@ -35,6 +37,9 @@ export default (req, res, next) => {
         }
 
         req.auth = { userId: userId };
-        next();
-    });
+        return next();
+    } catch (error) {
+        const message = `L'utilisateur n'est pas autorisé à accéder à cette ressource.`;
+        return res.status(401).json({ message, data: error.message });
+    }
 };

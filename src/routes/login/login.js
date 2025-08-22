@@ -1,6 +1,7 @@
 import { User } from '@/db/sequelize.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { v4 as uuidv4 } from 'uuid'
 
 export default (app) => {
     app.post('/api/login', (req, res) => {
@@ -21,7 +22,7 @@ export default (app) => {
                         const token = jwt.sign(
                             { userId: user.id },
                             process.env.JWT_PRIVATE_KEY,
-                            { expiresIn: process.env.JWT_EXPIRES_IN }
+                            { expiresIn: process.env.JWT_EXPIRES_IN, jwtid: uuidv4() }
                         )
                         const message = `L'utilisateur a été connecté avec succès.`
                         return res.json({ message, data: user, token })
