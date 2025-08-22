@@ -5,8 +5,6 @@ import UserModel from '../models/user.js'
 import mariadb from 'mariadb';
 import 'dotenv/config'
 
-console.log(process.env.DB_NAME, process.env.DB_USER);
-
 const sequelize = new Sequelize(
     `${process.env.DB_NAME}`,
     `${process.env.DB_USER}`,
