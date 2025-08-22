@@ -5,15 +5,9 @@ import bodyParser from 'body-parser'
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { initDb } from './src/db/sequelize.js'
+import { initDb } from '@/db/sequelize.js'
 
-import findAllPokemons from './src/routes/findAllPokemons.js'
-import findPokemonByPk from './src/routes/findPokemonByPk.js'
-import createPokemon from './src/routes/createPokemon.js'
-import updatePokemon from './src/routes/updatePokemon.js'
-import deletePokemon from './src/routes/deletePokemon.js'
-import login from './src/routes/login.js'
-import createUser from './src/routes/createUser.js';
+import routes from '@/routes/index.js'
 
 const port = 3000;
 const app = express();
@@ -28,13 +22,7 @@ app
 .use(bodyParser.urlencoded({ extended: false }))
 
 initDb()
-createUser(app)
-login(app)
-findAllPokemons(app)
-findPokemonByPk(app)
-createPokemon(app)
-updatePokemon(app)
-deletePokemon(app)
+routes(app)
 
 app.use(({res}) => {
     const message = 'Impossible de trouver la ressources demandée! Vous pouvez essayer une autre URL'
