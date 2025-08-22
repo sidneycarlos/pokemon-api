@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 export default (app) => {
     app.post('/api/users', (req, res) => {
         if (req.body.password) {
-            bcrypt.hash(req.body.password, 10)
+            bcrypt.hash(req.body.password, process.env.BCRYPT_SALT_ROUNDS)
                 .then(hash => {
                     User.create({
                         username: req.body.username,
